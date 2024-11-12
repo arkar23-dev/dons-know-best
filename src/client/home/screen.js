@@ -26,8 +26,13 @@ const data = [
 ];
 
 const Screen = () => {
+
   return (
-    <Swiper>
+    <Swiper
+      loadMore={() => {
+        alert('Load More');
+      }}
+    >
       {data.map((content) => (
         <SwiperItem key={content.id}>
           <div className={cardCss.card}>
