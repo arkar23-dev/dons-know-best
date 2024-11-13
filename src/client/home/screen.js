@@ -1,7 +1,7 @@
 import React from "react";
 import cardCss from "../css/card.css";
 import { Swiper, SwiperItem } from "../components/swiper";
-
+import DraggableCard from "../components/draggablecard";
 const data = [
   {
     id: 1,
@@ -26,22 +26,26 @@ const data = [
 ];
 
 const Screen = () => {
-
   return (
     <Swiper
       loadMore={() => {
-        alert('Load More');
+        alert("Load More");
       }}
     >
       {data.map((content) => (
         <SwiperItem key={content.id}>
-          <div className={cardCss.card}>
-            <div className={cardCss.card_header}>{content.title}</div>
-            <div className={cardCss.card_body}>
-              <p className={cardCss.card_text}>{content.description}</p>
+          <DraggableCard
+            onSwipeLeft={() => alert("you swipe left")}
+            onSwipeRight={() => alert("you swipe right")}
+          >
+            <div className={cardCss.card}>
+              <div className={cardCss.card_header}>{content.title}</div>
+              <div className={cardCss.card_body}>
+                <p className={cardCss.card_text}>{content.description}</p>
+              </div>
+              <div className={cardCss.card_footer}>footer</div>
             </div>
-            <div className={cardCss.card_footer}>footer</div>
-          </div>
+          </DraggableCard>
         </SwiperItem>
       ))}
     </Swiper>

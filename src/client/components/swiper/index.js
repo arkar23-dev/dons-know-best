@@ -6,28 +6,39 @@ const Swiper = ({ children, loadMore, ...props }) => {
 
   const touchStartY = useRef(0);
   const touchEndY = useRef(0);
+  // to track x axis movement
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   const dataLength = React.Children.count(children);
 
   const handleTouchStart = (e) => {
     touchStartY.current = e.touches[0].clientY;
+    touchStartX.current = e.touches[0].clientX;
   };
 
   const handleTouchMove = (e) => {
     touchEndY.current = e.touches[0].clientY;
+    touchEndX.current = e.touches[0].clientX;
   };
 
   const handleTouchEnd = () => {
-    const swipeDistance = touchStartY.current - touchEndY.current;
+    const swipeDistanceY = touchStartY.current - touchEndY.current;
+    const swipeDistanceX = touchStartX.current - touchEndX.current;
+
     const swipeThreshold = 50;
 
-    if (swipeDistance > swipeThreshold && currentIndex + 1 === dataLength) {
+    if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) {
+        return;
+      }
+
+    if (swipeDistanceY > swipeThreshold && currentIndex + 1 === dataLength) {
       loadMore();
     }
 
-    if (swipeDistance > swipeThreshold && currentIndex < dataLength - 1) {
+    if (swipeDistanceY > swipeThreshold && currentIndex < dataLength - 1) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
-    } else if (swipeDistance < -swipeThreshold && currentIndex > 0) {
+    } else if (swipeDistanceY < -swipeThreshold && currentIndex > 0) {
       setCurrentIndex((prevIndex) => prevIndex - 1);
     }
   };
