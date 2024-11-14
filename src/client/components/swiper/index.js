@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import swiperCss from "./swiper.css";
 
@@ -6,48 +5,46 @@ const SWIPE_THRESHOLD = 50;
 
 const Swiper = ({ children, loadMore, ...props }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const touchStart = useRef({ x: 0, y: 0 });
-  const touchEnd = useRef({ x: 0, y: 0 });
+
+  const touchStartY = useRef(0);
+  const touchEndY = useRef(0);
+  const touchStartX = useRef(0);
   const timeoutRef = useRef(null);
 
   const dataLength = React.Children.count(children);
 
   const handleTouchStart = (e) => {
-    const { clientX, clientY } = e.touches[0];
-    touchStart.current = { x: clientX, y: clientY };
+    touchStartY.current = e.touches[0].clientY;
+    touchStartX.current = e.touches[0].clientX;
   };
 
   const handleTouchMove = (e) => {
-    const { clientX, clientY } = e.touches[0];
-    touchEnd.current = { x: clientX, y: clientY };
+    // Only update Y values if primarily vertical to save processing
+    if (Math.abs(touchStartX.current - e.touches[0].clientX) < Math.abs(touchStartY.current - e.touches[0].clientY)) {
+      touchEndY.current = e.touches[0].clientY;
+    }
   };
 
   const handleTouchEnd = useCallback(() => {
     clearTimeout(timeoutRef.current);
 
     timeoutRef.current = setTimeout(() => {
-      const swipeDistanceY = touchStart.current.y - touchEnd.current.y;
-      const swipeDistanceX = touchStart.current.x - touchEnd.current.x;
+      const swipeDistanceY = touchStartY.current - touchEndY.current;
 
-      // Ignore swipe if it's primarily horizontal
-      if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) return;
-
-      // Check swipe direction and set index accordingly
-      if (swipeDistanceY > SWIPE_THRESHOLD) {
-        if (currentIndex + 1 === dataLength) loadMore();
-        if (currentIndex < dataLength - 1) setCurrentIndex((i) => i + 1);
+      if (swipeDistanceY > SWIPE_THRESHOLD && currentIndex < dataLength - 1) {
+        setCurrentIndex((prevIndex) => prevIndex + 1);
       } else if (swipeDistanceY < -SWIPE_THRESHOLD && currentIndex > 0) {
-        setCurrentIndex((i) => i - 1);
+        setCurrentIndex((prevIndex) => prevIndex - 1);
       }
-    }, 100);
+
+      if (swipeDistanceY > SWIPE_THRESHOLD && currentIndex + 1 === dataLength) {
+        loadMore();
+      }
+    }, 80); // Shorter debounce for quicker response
   }, [currentIndex, dataLength, loadMore]);
 
   useEffect(() => {
-    document.body.classList.add("no-scroll");
-    return () => {
-      document.body.classList.remove("no-scroll");
-      clearTimeout(timeoutRef.current);
-    };
+    return () => clearTimeout(timeoutRef.current); // Cleanup on unmount
   }, []);
 
   return (
@@ -61,9 +58,8 @@ const Swiper = ({ children, loadMore, ...props }) => {
       <div
         className={swiperCss.swipeable_content}
         style={{
-          transform: `translate3d(0, -${currentIndex * 100}vh, 0)`,
-          transition: "transform 0.6s cubic-bezier(0.25, 0.8, 0.5, 1)",
-          willChange: "transform",  // Optimize for smoother transition
+          transform: `translateY(-${currentIndex * 100}vh)`,
+          transition: "transform 0.5s cubic-bezier(0.4, 0.8, 0.6, 1)",
         }}
       >
         {React.Children.map(children, (child, index) =>

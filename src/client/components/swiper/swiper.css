@@ -1,6 +1,6 @@
 /* SwipeableView.css */
 .swipeable_container {
-    position: fixed;
+    position: static;
     width: 100%;
     height: 100%;
     overflow: hidden;
