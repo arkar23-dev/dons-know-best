@@ -1,7 +1,8 @@
+
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import swiperCss from "./swiper.css";
 
-const SWIPE_THRESHOLD = 50;  // Constant for swipe threshold
+const SWIPE_THRESHOLD = 50;
 
 const Swiper = ({ children, loadMore, ...props }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -41,7 +42,6 @@ const Swiper = ({ children, loadMore, ...props }) => {
     }, 100);
   }, [currentIndex, dataLength, loadMore]);
 
-  // Add no-scroll class on mount to prevent body scrolling and clean up on unmount
   useEffect(() => {
     document.body.classList.add("no-scroll");
     return () => {
@@ -61,8 +61,9 @@ const Swiper = ({ children, loadMore, ...props }) => {
       <div
         className={swiperCss.swipeable_content}
         style={{
-          transform: `translateY(-${currentIndex * 100}vh)`,
+          transform: `translate3d(0, -${currentIndex * 100}vh, 0)`,
           transition: "transform 0.6s cubic-bezier(0.25, 0.8, 0.5, 1)",
+          willChange: "transform",  // Optimize for smoother transition
         }}
       >
         {React.Children.map(children, (child, index) =>
