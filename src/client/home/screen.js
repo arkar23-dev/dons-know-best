@@ -4,22 +4,22 @@ import { Swiper, SwiperItem } from "../components/swiper";
 import DraggableCard from "../components/draggablecard";
 const contentData = [
   {
-    id: 1,
+    id: 1 + new Date().toString,
     title: "Content 1",
     description: "This is the description for Content 1",
   },
   {
-    id: 2,
+    id: 2 + new Date().toString,
     title: "Content 2",
     description: "This is the description for Content 2",
   },
   {
-    id: 3,
+    id: 3 + new Date().toString,
     title: "Content 3",
     description: "This is the description for Content 3",
   },
   {
-    id: 4,
+    id: 4 + new Date().toString,
     title: "Content 4",
     description: "This is the description for Content 4",
   },
@@ -31,16 +31,12 @@ const Screen = () => {
   return (
     <Swiper
       loadMore={() => {
-        alert("Load More");
         setData(() => [...data, ...data]);
       }}
     >
       {data.map((content) => (
         <SwiperItem key={content.id}>
-          <DraggableCard
-            onSwipeLeft={() => alert("you swipe left")}
-            onSwipeRight={() => alert("you swipe right")}
-          >
+          <DraggableCard>
             <div className={cardCss.card}>
               <div className={cardCss.card_header}>{content.title}</div>
               <div className={cardCss.card_body}>
