@@ -1,51 +1,54 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import swiperCss from "./swiper.css";
+
+const SWIPE_THRESHOLD = 50;  // Constant for swipe threshold
 
 const Swiper = ({ children, loadMore, ...props }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  const touchStartY = useRef(0);
-  const touchEndY = useRef(0);
-  // to track x axis movement
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
+  const touchStart = useRef({ x: 0, y: 0 });
+  const touchEnd = useRef({ x: 0, y: 0 });
+  const timeoutRef = useRef(null);
 
   const dataLength = React.Children.count(children);
 
   const handleTouchStart = (e) => {
-    touchStartY.current = e.touches[0].clientY;
-    touchStartX.current = e.touches[0].clientX;
+    const { clientX, clientY } = e.touches[0];
+    touchStart.current = { x: clientX, y: clientY };
   };
 
   const handleTouchMove = (e) => {
-    touchEndY.current = e.touches[0].clientY;
-    touchEndX.current = e.touches[0].clientX;
+    const { clientX, clientY } = e.touches[0];
+    touchEnd.current = { x: clientX, y: clientY };
   };
 
-  const handleTouchEnd = () => {
-    const swipeDistanceY = touchStartY.current - touchEndY.current;
-    const swipeDistanceX = touchStartX.current - touchEndX.current;
+  const handleTouchEnd = useCallback(() => {
+    clearTimeout(timeoutRef.current);
 
-    const swipeThreshold = 50;
+    timeoutRef.current = setTimeout(() => {
+      const swipeDistanceY = touchStart.current.y - touchEnd.current.y;
+      const swipeDistanceX = touchStart.current.x - touchEnd.current.x;
 
-    if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) {
-        return;
+      // Ignore swipe if it's primarily horizontal
+      if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) return;
+
+      // Check swipe direction and set index accordingly
+      if (swipeDistanceY > SWIPE_THRESHOLD) {
+        if (currentIndex + 1 === dataLength) loadMore();
+        if (currentIndex < dataLength - 1) setCurrentIndex((i) => i + 1);
+      } else if (swipeDistanceY < -SWIPE_THRESHOLD && currentIndex > 0) {
+        setCurrentIndex((i) => i - 1);
       }
+    }, 100);
+  }, [currentIndex, dataLength, loadMore]);
 
-    if (swipeDistanceY > swipeThreshold && currentIndex + 1 === dataLength) {
-      loadMore();
-    }
-
-    if (swipeDistanceY > swipeThreshold && currentIndex < dataLength - 1) {
-      setCurrentIndex((prevIndex) => prevIndex + 1);
-    } else if (swipeDistanceY < -swipeThreshold && currentIndex > 0) {
-      setCurrentIndex((prevIndex) => prevIndex - 1);
-    }
-  };
-
-  const handleScroll =(e)=>{
-    console.log('hi')
-  }
+  // Add no-scroll class on mount to prevent body scrolling and clean up on unmount
+  useEffect(() => {
+    document.body.classList.add("no-scroll");
+    return () => {
+      document.body.classList.remove("no-scroll");
+      clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   return (
     <div
@@ -59,21 +62,22 @@ const Swiper = ({ children, loadMore, ...props }) => {
         className={swiperCss.swipeable_content}
         style={{
           transform: `translateY(-${currentIndex * 100}vh)`,
-          transition: "transform 0.4s ease-out",
-          //   transition: "transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55)",
+          transition: "transform 0.6s cubic-bezier(0.25, 0.8, 0.5, 1)",
         }}
       >
-        {children}
+        {React.Children.map(children, (child, index) =>
+          React.cloneElement(child, { key: `swiper-item-${index}` })
+        )}
       </div>
     </div>
   );
 };
 
-function SwiperItem({ children, loading,...props }) {
+function SwiperItem({ children, loading, ...props }) {
   return (
     <div className={swiperCss.swipeable_item} {...props}>
       {children}
-      <div>{loading ? "Loading" : undefined}</div>
+      {loading && <div>Loading</div>}
     </div>
   );
 }
