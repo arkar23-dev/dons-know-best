@@ -9,9 +9,10 @@ const DraggableCard = ({ children, onSwipeLeft, onSwipeRight, swipeThreshold }) 
   const dragging = useRef(false);
   const startPosition = useRef({ x: 0, y: 0 });
 
-  const xThreshold = 20;
-  const swipeThresholdLimit = swipeThreshold ?? 90;
-  const offScreenX = 900;
+
+  const xThreshold = 14;
+  const swipeThresholdLimit = swipeThreshold ??  90;
+  const offScreenX = 300;
 
   const handleDragStart = useCallback((e) => {
     dragging.current = true;
@@ -43,7 +44,7 @@ const DraggableCard = ({ children, onSwipeLeft, onSwipeRight, swipeThreshold }) 
     if (!dragging.current) return;
     dragging.current = false;
 
-    if (x > swipeThreshold) {
+    if (x > swipeThresholdLimit) {
       setDragState({ x: offScreenX, y, transition: "0.25s ease" });
       setTimeout(() => {
         onSwipeRight && onSwipeRight();
