@@ -4,22 +4,22 @@ import { Swiper, SwiperItem } from "../components/swiper";
 import DraggableCard from "../components/draggablecard";
 const contentData = [
   {
-    id: 1 + new Date().toString,
+    id: 1,
     title: "Content 1",
     description: "This is the description for Content 1",
   },
   {
-    id: 2 + new Date().toString,
+    id: 2,
     title: "Content 2",
     description: "This is the description for Content 2",
   },
   {
-    id: 3 + new Date().toString,
+    id: 3,
     title: "Content 3",
     description: "This is the description for Content 3",
   },
   {
-    id: 4 + new Date().toString,
+    id: 4,
     title: "Content 4",
     description: "This is the description for Content 4",
   },
