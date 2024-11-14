@@ -31,12 +31,16 @@ const Screen = () => {
   return (
     <Swiper
       loadMore={() => {
+        alert('Load More');
         setData(() => [...data, ...data]);
       }}
     >
       {data.map((content) => (
         <SwiperItem key={content.id}>
-          <DraggableCard>
+          <DraggableCard
+            onSwipeLeft={()=>alert('You Swipe Left')}
+            onSwipeRight={()=>alert('You Swipe Right')}
+          >
             <div className={cardCss.card}>
               <div className={cardCss.card_header}>{content.title}</div>
               <div className={cardCss.card_body}>
