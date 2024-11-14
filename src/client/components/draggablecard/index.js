@@ -1,76 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useCallback } from "react";
 
 const DraggableCard = ({ children, onSwipeLeft, onSwipeRight }) => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [dragging, setDragging] = useState(false);
-  const [startPosition, setStartPosition] = useState({ x: 0, y: 0 });
-  const [transition, setTransition] = useState("0.3s ease");
+  const [{ x, y, transition }, setDragState] = useState({
+    x: 0,
+    y: 0,
+    transition: "none",
+  });
+  const dragging = useRef(false);
+  const startPosition = useRef({ x: 0, y: 0 });
 
-    const handleDragStart = (e) => {
-        setDragging(true);
-        const clientX = e.clientX || e.touches[0].clientX;
-        const clientY = e.clientY || e.touches[0].clientY;
-        setStartPosition({ x: clientX, y: clientY });
-      };
+  const xThreshold = 14;
+  const swipeThreshold = 70;
+  const offScreenX = 500;
 
-      const handleDrag = (e) => {
-        if (!dragging) return;
+  const handleDragStart = useCallback((e) => {
+    dragging.current = true;
+    const clientX = e.clientX || e.touches[0].clientX;
+    const clientY = e.clientY || e.touches[0].clientY;
+    startPosition.current = { x: clientX, y: clientY };
+    setDragState((prevState) => ({ ...prevState, transition: "none" }));
+  }, []);
 
-        const clientX = e.clientX || e.touches[0].clientX;
-        const clientY = e.clientY || e.touches[0].clientY;
-        const deltaX = clientX - startPosition.x;
-        const deltaY = clientY - startPosition.y;
-        setPosition({ x: deltaX, y: deltaY });
-      };
+  const handleDrag = useCallback((e) => {
+    if (!dragging.current) return;
 
-      const handleDragEnd = () => {
-        if (!dragging) return;
-        setDragging(false);
+    const clientX = e.clientX || e.touches[0].clientX;
+    const clientY = e.clientY || e.touches[0].clientY;
+    const deltaX = clientX - startPosition.current.x;
+    const deltaY = clientY - startPosition.current.y;
 
-        // Swipe threshold
-        const swipeThreshold = 200;
-        const offScreenX = 500; // Distance to move card off-screen
+    // Only update position if x-axis movement exceeds threshold
+    if (Math.abs(deltaX) > xThreshold) {
+      setDragState((prevState) => ({
+        ...prevState,
+        x: deltaX,
+        y: deltaY,
+      }));
+    }
+  }, []);
 
-        if (position.x > swipeThreshold) {
-          // Swipe right animation
-          setTransition("0.5s ease"); // Smoothly animate off-screen
-          setPosition({ x: offScreenX, y: position.y });
-          setTimeout(() => {
-            onSwipeRight && onSwipeRight();
-            setPosition({ x: 0, y: 0 });
-            setTransition("0.3s ease");
-          }, 500);
-        } else if (position.x < -swipeThreshold) {
-          // Swipe left animation
-          setTransition("0.5s ease"); // Smoothly animate off-screen
-          setPosition({ x: -offScreenX, y: position.y });
-          setTimeout(() => {
-            onSwipeLeft && onSwipeLeft();
-            // Reset position after swipe
-            setPosition({ x: 0, y: 0 });
-            setTransition("0.3s ease"); // Reset transition for next card
-          }, 500);
-        } else {
-          // Return to center if not swiped far enough
-          setTransition("0.3s ease"); // Smoothly animate back to center
-          setPosition({ x: 0, y: 0 });
-        }
-      };
+  const handleDragEnd = useCallback(() => {
+    if (!dragging.current) return;
+    dragging.current = false;
 
+    if (x > swipeThreshold) {
+      setDragState({ x: offScreenX, y, transition: "0.25s ease" });
+      setTimeout(() => {
+        onSwipeRight && onSwipeRight();
+        resetPosition();
+      }, 250);
+    } else if (x < -swipeThreshold) {
+      setDragState({ x: -offScreenX, y, transition: "0.25s ease" });
+      setTimeout(() => {
+        onSwipeLeft && onSwipeLeft();
+        resetPosition();
+      }, 250);
+    } else {
+      resetPosition();
+    }
+  }, [x, y, onSwipeLeft, onSwipeRight]);
+
+  const resetPosition = useCallback(() => {
+    setDragState({ x: 0, y: 0, transition: "0.2s ease-out" });
+  }, []);
 
   return (
     <div
-    onMouseDown={handleDragStart}
-    onMouseMove={dragging ? handleDrag : null}
-    onMouseUp={handleDragEnd}
-    onMouseLeave={dragging ? handleDragEnd : null}
-    onTouchStart={handleDragStart}
-    onTouchMove={handleDrag}
-    onTouchEnd={handleDragEnd}
+      onMouseDown={handleDragStart}
+      onMouseMove={dragging.current ? handleDrag : null}
+      onMouseUp={handleDragEnd}
+      onMouseLeave={dragging.current ? handleDragEnd : null}
+      onTouchStart={handleDragStart}
+      onTouchMove={handleDrag}
+      onTouchEnd={handleDragEnd}
       style={{
-        transform: `translate(${position.x}px, ${position.y}px) rotate(${
-          position.x / 30
-        }deg)`,
+        transform: `translate(${x}px, ${y}px) rotate(${x / 20}deg)`,
         transition: transition,
         backgroundColor: "lightcoral",
         borderRadius: "10px",

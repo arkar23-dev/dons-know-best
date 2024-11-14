@@ -2,7 +2,7 @@ import React from "react";
 import cardCss from "../css/card.css";
 import { Swiper, SwiperItem } from "../components/swiper";
 import DraggableCard from "../components/draggablecard";
-const data = [
+const contentData = [
   {
     id: 1,
     title: "Content 1",
@@ -26,10 +26,13 @@ const data = [
 ];
 
 const Screen = () => {
+  const [data, setData] = React.useState(contentData);
+
   return (
     <Swiper
       loadMore={() => {
         alert("Load More");
+        setData(() => [...data, ...data]);
       }}
     >
       {data.map((content) => (
