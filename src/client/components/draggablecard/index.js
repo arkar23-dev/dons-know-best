@@ -12,7 +12,7 @@ const DraggableCard = ({ children, onSwipeLeft, onSwipeRight, swipeThreshold }) 
 
   const xThreshold = 14;
   const swipeThresholdLimit = swipeThreshold ??  90;
-  const offScreenX = 300;
+  const offScreenX = 500;
 
   const handleDragStart = useCallback((e) => {
     dragging.current = true;
