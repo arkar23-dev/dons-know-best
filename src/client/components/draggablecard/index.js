@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 
-const DraggableCard = ({ children, onSwipeLeft, onSwipeRight }) => {
+const DraggableCard = ({ children, onSwipeLeft, onSwipeRight, swipeThreshold }) => {
   const [{ x, y, transition }, setDragState] = useState({
     x: 0,
     y: 0,
@@ -9,9 +9,9 @@ const DraggableCard = ({ children, onSwipeLeft, onSwipeRight }) => {
   const dragging = useRef(false);
   const startPosition = useRef({ x: 0, y: 0 });
 
-  const xThreshold = 14;
-  const swipeThreshold = 70;
-  const offScreenX = 500;
+  const xThreshold = 20;
+  const swipeThresholdLimit = swipeThreshold ?? 90;
+  const offScreenX = 900;
 
   const handleDragStart = useCallback((e) => {
     dragging.current = true;
@@ -49,7 +49,7 @@ const DraggableCard = ({ children, onSwipeLeft, onSwipeRight }) => {
         onSwipeRight && onSwipeRight();
         resetPosition();
       }, 250);
-    } else if (x < -swipeThreshold) {
+    } else if (x < -swipeThresholdLimit) {
       setDragState({ x: -offScreenX, y, transition: "0.25s ease" });
       setTimeout(() => {
         onSwipeLeft && onSwipeLeft();
