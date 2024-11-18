@@ -1,6 +1,6 @@
 {
     "name": "@ombiel/dons-know-best-exp",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "repository": "-",
     "license": "UNLICENSED",
     "scripts": {
@@ -39,7 +39,8 @@
         "access": {
             "write": {
                 "users": [
-                    "na::a10"
+                    "na::a10",
+                    "na:athakker"
                 ]
             }
         },
