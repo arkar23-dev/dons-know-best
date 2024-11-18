@@ -47,30 +47,66 @@ const DraggableCard = ({ children, onSwipeLeft, onSwipeRight, swipeThreshold = 9
     setDragState({ x: 0, transition: "0.2s ease-out" });
   }, []);
 
+  const triggerSwipeLeft = () => {
+    setDragState({ x: -500, transition: "0.25s ease" });
+    setTimeout(() => {
+      onSwipeLeft && onSwipeLeft();
+      resetPosition();
+    }, 250);
+  };
+
+  const triggerSwipeRight = () => {
+    setDragState({ x: 500, transition: "0.25s ease" });
+    setTimeout(() => {
+      onSwipeRight && onSwipeRight();
+      resetPosition();
+    }, 250);
+  };
+
   return (
-    <div
-      onMouseDown={handleDragStart}
-      onMouseMove={dragging.current ? handleDrag : null}
-      onMouseUp={handleDragEnd}
-      onMouseLeave={dragging.current ? handleDragEnd : null}
-      onTouchStart={handleDragStart}
-      onTouchMove={handleDrag}
-      onTouchEnd={handleDragEnd}
-      style={{
-        transform: `translateX(${x}px) rotate(${x / 20}deg)`,
-        transition,
-        backgroundColor: "lightcoral",
-        borderRadius: "10px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        userSelect: "none",
-      }}
-    >
-      {children}
+    <div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div
+        onMouseDown={handleDragStart}
+        onMouseMove={dragging.current ? handleDrag : null}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={dragging.current ? handleDragEnd : null}
+        onTouchStart={handleDragStart}
+        onTouchMove={handleDrag}
+        onTouchEnd={handleDragEnd}
+        style={{
+          transform: `translateX(${x}px) rotate(${x / 20}deg)`,
+          transition,
+          backgroundColor: "lightcoral",
+          borderRadius: "10px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          userSelect: "none",
+        }}
+      >
+        {children}
+      </div>
+      <div style={{ display: "flex", gap: "10px" , marginTop: '100px'}}>
+        <button onClick={triggerSwipeLeft} style={buttonStyle}>
+          Swipe Left
+        </button>
+        <button onClick={triggerSwipeRight} style={buttonStyle}>
+          Swipe Right
+        </button>
+      </div>
     </div>
   );
+};
+
+const buttonStyle = {
+  padding: "10px 20px",
+  fontSize: "16px",
+  backgroundColor: "dodgerblue",
+  color: "white",
+  border: "none",
+  borderRadius: "5px",
+  cursor: "pointer",
 };
 
 export default DraggableCard;
