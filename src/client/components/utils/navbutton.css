@@ -1,0 +1,9 @@
+.link{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    color: #333333;
+}
+.ctaContainer{
+    display: flex;
+}
