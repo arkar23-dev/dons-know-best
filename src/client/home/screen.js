@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import cardCss from "../css/card.css";
 import { Swiper, SwiperItem } from "../components/swiper";
 import DraggableCard from "../components/draggablecard";
@@ -27,31 +27,45 @@ const contentData = [
 
 const Screen = () => {
   const [data, setData] = React.useState(contentData);
+  const swiperRef = useRef();
 
   return (
-    <Swiper
-      loadMore={() => {
-        alert('Load More');
-        setData(() => [...data, ...data]);
-      }}
-    >
-      {data.map((content) => (
-        <SwiperItem key={content.id}>
-          <DraggableCard
-            onSwipeLeft={()=>alert('You Swipe Left')}
-            onSwipeRight={()=>alert('You Swipe Right')}
-          >
-            <div className={cardCss.card}>
-              <div className={cardCss.card_header}>{content.title}</div>
-              <div className={cardCss.card_body}>
-                <p className={cardCss.card_text}>{content.description}</p>
+    <>
+      <button type="button" onClick={() => swiperRef.current.prevSlide()}>
+        Previous
+      </button>
+      <button type="button" onClick={() => swiperRef.current.nextSlide()}>
+        Next
+      </button>
+      <button type="button" onClick={() => swiperRef.current.goToSlide(2)}>
+        Go to Slide 3
+      </button>
+      <Swiper
+        loadMore={() => {
+          alert("Load More");
+          setData(() => [...data, ...data]);
+        }}
+        ref={swiperRef}
+      >
+        {data.map((content) => (
+          <SwiperItem key={content.id}>
+            <DraggableCard
+              onSwipeLeft={() => alert("You Swipe Left")}
+              onSwipeRight={() => alert("You Swipe Right")}
+              showBtns
+            >
+              <div className={cardCss.card}>
+                <div className={cardCss.card_header}>{content.title}</div>
+                <div className={cardCss.card_body}>
+                  <p className={cardCss.card_text}>{content.description}</p>
+                </div>
+                <div className={cardCss.card_footer}>footer</div>
               </div>
-              <div className={cardCss.card_footer}>footer</div>
-            </div>
-          </DraggableCard>
-        </SwiperItem>
-      ))}
-    </Swiper>
+            </DraggableCard>
+          </SwiperItem>
+        ))}
+      </Swiper>
+    </>
   );
 };
 

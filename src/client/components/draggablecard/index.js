@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from "react";
 
-const DraggableCard = ({ children, onSwipeLeft, onSwipeRight, swipeThreshold = 90 }) => {
+const DraggableCard = ({ children, onSwipeLeft, onSwipeRight, swipeThreshold = 90,showBtns=false }) => {
   const [{ x, transition }, setDragState] = useState({
     x: 0,
     transition: "none",
@@ -87,7 +87,9 @@ const DraggableCard = ({ children, onSwipeLeft, onSwipeRight, swipeThreshold = 9
       >
         {children}
       </div>
-      <div style={{ display: "flex", gap: "10px" , marginTop: '100px'}}>
+      {
+        showBtns &&
+      <div style={{ display: "flex", gap: "10px" , marginTop: '60px'}}>
         <button onClick={triggerSwipeLeft} style={buttonStyle}>
           Swipe Left
         </button>
@@ -95,6 +97,7 @@ const DraggableCard = ({ children, onSwipeLeft, onSwipeRight, swipeThreshold = 9
           Swipe Right
         </button>
       </div>
+}
     </div>
   );
 };

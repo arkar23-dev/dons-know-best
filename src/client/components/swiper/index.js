@@ -1,9 +1,9 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
 import swiperCss from "./swiper.css";
 
 const SWIPE_THRESHOLD = 50; // Threshold for swipe action to trigger
 
-const Swiper = ({ children, loadMore, ...props }) => {
+const Swiper = forwardRef(({ children, loadMore, ...props }, ref) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const touchStartY = useRef(0);
@@ -15,7 +15,6 @@ const Swiper = ({ children, loadMore, ...props }) => {
   const dataLength = React.Children.count(children);
 
   const handleTouchStart = (e) => {
-    // Initialize touch start positions
     touchStartY.current = e.touches[0].clientY;
     touchStartX.current = e.touches[0].clientX;
     touchEndY.current = e.touches[0].clientY;
@@ -23,7 +22,6 @@ const Swiper = ({ children, loadMore, ...props }) => {
   };
 
   const handleTouchMove = (e) => {
-    // Update touch positions as the user moves their finger
     touchEndY.current = e.touches[0].clientY;
     touchEndX.current = e.touches[0].clientX;
   };
@@ -35,25 +33,46 @@ const Swiper = ({ children, loadMore, ...props }) => {
       const swipeDistanceY = touchStartY.current - touchEndY.current;
       const swipeDistanceX = touchStartX.current - touchEndX.current;
 
-      // Check if it's a drag (more movement on the X axis than Y axis)
       if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) {
-        return; // Ignore swipe if it's more of a drag
+        return;
       }
 
       if (swipeDistanceY > SWIPE_THRESHOLD && currentIndex < dataLength - 1) {
-        setCurrentIndex((prevIndex) => prevIndex + 1); // Swipe down to next item
+        nextSlide();
       } else if (swipeDistanceY < -SWIPE_THRESHOLD && currentIndex > 0) {
-        setCurrentIndex((prevIndex) => prevIndex - 1); // Swipe up to previous item
+        prevSlide();
       }
 
       if (swipeDistanceY > SWIPE_THRESHOLD && currentIndex + 1 === dataLength) {
-        loadMore(); // Trigger load more if at the last item
+        loadMore();
       }
-    }, 80); // Shorter debounce for quicker response
+    }, 80);
   }, [currentIndex, dataLength, loadMore]);
 
+  const nextSlide = useCallback(() => {
+    if (currentIndex < dataLength - 1) {
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+    }
+  }, [currentIndex, dataLength]);
+
+  const prevSlide = useCallback(() => {
+    if (currentIndex > 0) {
+      setCurrentIndex((prevIndex) => prevIndex - 1);
+    }
+  }, [currentIndex]);
+
+  useImperativeHandle(ref, () => ({
+    nextSlide,
+    prevSlide,
+    goToSlide: (index) => {
+      if (index >= 0 && index < dataLength) {
+        setCurrentIndex(index);
+      }
+    },
+  }));
+
   useEffect(() => {
-    return () => clearTimeout(timeoutRef.current); // Cleanup on unmount
+    return () => clearTimeout(timeoutRef.current);
   }, []);
 
   return (
@@ -77,7 +96,7 @@ const Swiper = ({ children, loadMore, ...props }) => {
       </div>
     </div>
   );
-};
+});
 
 function SwiperItem({ children, loading, ...props }) {
   return (
