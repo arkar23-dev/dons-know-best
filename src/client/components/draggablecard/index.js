@@ -85,14 +85,14 @@ const DraggableCard = ({ children, onSwipeLeft, onSwipeRight, swipeThreshold = 9
         {children}
       </div>
       {/*TO DO Buttons to be part of the card screen*/}
-      {/*<div style={{ display: "flex", gap: "10px" , marginTop: '100px'}}>*/}
-      {/*  <button onClick={triggerSwipeLeft} style={buttonStyle}>*/}
-      {/*    Swipe Left*/}
-      {/*  </button>*/}
-      {/*  <button onClick={triggerSwipeRight} style={buttonStyle}>*/}
-      {/*    Swipe Right*/}
-      {/*  </button>*/}
-      {/*</div>*/}
+     <div style={{ display: "flex", gap: "10px" , marginTop: '10px'}}>
+       <button onClick={triggerSwipeLeft} style={buttonStyle}>
+         Swipe Left
+       </button>
+       <button onClick={triggerSwipeRight} style={buttonStyle}>
+         Swipe Right
+       </button>
+     </div>
     </div>
   );
 };
