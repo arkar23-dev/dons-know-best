@@ -1,4 +1,11 @@
-import React, { useState, useRef, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import swiperCss from "./swiper.css";
 
 const SWIPE_THRESHOLD = 50; // Threshold for swipe action to trigger
@@ -102,7 +109,11 @@ function SwiperItem({ children, loading, ...props }) {
   return (
     <div className={swiperCss.swipeable_item} {...props}>
       {children}
-      {loading && <div>Loading</div>}
+      {loading && (
+        <div className={swiperCss.loading_indicator}>
+          <div className={swiperCss.spinner}></div>
+        </div>
+      )}
     </div>
   );
 }

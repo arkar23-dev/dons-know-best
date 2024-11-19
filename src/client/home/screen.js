@@ -36,25 +36,36 @@ const bck_img =
 
 const Screen = () => {
   const [data, setData] = React.useState(contentData);
+  const [loading,setLoading] = React.useState(false);
+
   const swiperRef = useRef();
 
   return (
     <Swiper
       loadMore={() => {
-        alert("Load More");
-        setData(() => [...data, ...data]);
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            setData(() => [...data, ...data]);
+            swiperRef.current.nextSlide();
+        }, 2000);
       }}
+      ref={swiperRef}
     >
-      {data.map((content) => (
-        <SwiperItem key={content.id}>
+      {data.map((content, index) => (
+        <SwiperItem key={content.id}  loading={loading}>
           <DraggableCard
             onSwipeLeft={() => alert("You Swipe Left")}
             onSwipeRight={() => alert("You Swipe Right")}
           >
             <div className={cardCss.card}>
-              <div className={cardCss.card_header} style={{ backgroundImage: `url(${bck_img})`, backgroundSize: 'cover' }}>>
-
-              </div>
+              <div
+                className={cardCss.card_header}
+                style={{
+                  backgroundImage: `url(${bck_img})`,
+                  backgroundSize: "cover",
+                }}
+              ></div>
               <div className={cardCss.card_body}>
                 <div>
                   <h1>{content.title}</h1>

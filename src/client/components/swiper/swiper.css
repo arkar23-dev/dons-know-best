@@ -21,6 +21,7 @@ body {
 }
 
 .swipeable_item {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,4 +30,36 @@ body {
     font-size: 2rem;
     background-color: #333;
     flex-shrink: 0;
+}
+
+/* Fullscreen Container for the Loading Indicator */
+.loading_indicator {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Spinner Style */
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Animation for Spinner */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
