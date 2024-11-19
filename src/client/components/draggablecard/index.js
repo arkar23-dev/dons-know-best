@@ -76,9 +76,6 @@ const DraggableCard = ({ children, onSwipeLeft, onSwipeRight, swipeThreshold = 9
         style={{
           transform: `translateX(${x}px) rotate(${x / 20}deg)`,
           transition,
-          backgroundColor: "lightcoral",
-          borderRadius: "10px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
