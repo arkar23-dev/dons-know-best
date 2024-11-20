@@ -10,7 +10,7 @@ import swiperCss from "./swiper.css";
 
 const SWIPE_THRESHOLD = 50; // Threshold for swipe action to trigger
 
-const Swiper = forwardRef(({ children, loadMore, ...props }, ref) => {
+const Swiper = forwardRef(({ children, loadMore, preventSwipeOnLoading=false, ...props }, ref) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const touchStartY = useRef(0);
@@ -22,6 +22,8 @@ const Swiper = forwardRef(({ children, loadMore, ...props }, ref) => {
   const dataLength = React.Children.count(children);
 
   const handleTouchStart = (e) => {
+    if(preventSwipeOnLoading) return;
+
     touchStartY.current = e.touches[0].clientY;
     touchStartX.current = e.touches[0].clientX;
     touchEndY.current = e.touches[0].clientY;
@@ -29,11 +31,15 @@ const Swiper = forwardRef(({ children, loadMore, ...props }, ref) => {
   };
 
   const handleTouchMove = (e) => {
+    if(preventSwipeOnLoading) return;
+
     touchEndY.current = e.touches[0].clientY;
     touchEndX.current = e.touches[0].clientX;
   };
 
   const handleTouchEnd = useCallback(() => {
+    if(preventSwipeOnLoading) return;
+
     clearTimeout(timeoutRef.current);
 
     timeoutRef.current = setTimeout(() => {

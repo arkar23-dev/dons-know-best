@@ -50,6 +50,7 @@ const Screen = () => {
             swiperRef.current.nextSlide();
         }, 2000);
       }}
+      preventSwipeOnLoading={loading}
       ref={swiperRef}
     >
       {data.map((content, index) => (
