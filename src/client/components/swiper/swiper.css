@@ -35,7 +35,6 @@ body {
 
 /* Fullscreen Container for the Loading Indicator */
 .loading_indicator {
-    transform: translateX(-50%);
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -50,12 +49,6 @@ body {
     border-top-color: #00543c;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    position: relative;
-    /* Centering */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 /* Animation for Spinner */
