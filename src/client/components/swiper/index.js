@@ -10,114 +10,125 @@ import swiperCss from "./swiper.css";
 
 const SWIPE_THRESHOLD = 50; // Threshold for swipe action to trigger
 
-const Swiper = forwardRef(({ children, loadMore, preventSwipeOnLoading=false, ...props }, ref) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const Swiper = forwardRef(
+  ({ children, loadMore, preventSwipeOnLoading = false, ...props }, ref) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-  const touchStartY = useRef(0);
-  const touchStartX = useRef(0);
-  const touchEndY = useRef(0);
-  const touchEndX = useRef(0);
-  const timeoutRef = useRef(null);
+    const touchStartY = useRef(0);
+    const touchStartX = useRef(0);
+    const touchEndY = useRef(0);
+    const touchEndX = useRef(0);
+    const timeoutRef = useRef(null);
 
-  const dataLength = React.Children.count(children);
+    const dataLength = React.Children.count(children);
 
-  const handleTouchStart = (e) => {
-    if(preventSwipeOnLoading) return;
+    const handleTouchStart = (e) => {
+      if (preventSwipeOnLoading) return;
 
-    touchStartY.current = e.touches[0].clientY;
-    touchStartX.current = e.touches[0].clientX;
-    touchEndY.current = e.touches[0].clientY;
-    touchEndX.current = e.touches[0].clientX;
-  };
+      touchStartY.current = e.touches[0].clientY;
+      touchStartX.current = e.touches[0].clientX;
+      touchEndY.current = e.touches[0].clientY;
+      touchEndX.current = e.touches[0].clientX;
+    };
 
-  const handleTouchMove = (e) => {
-    if(preventSwipeOnLoading) return;
+    const handleTouchMove = (e) => {
+      if (preventSwipeOnLoading) return;
 
-    touchEndY.current = e.touches[0].clientY;
-    touchEndX.current = e.touches[0].clientX;
-  };
+      touchEndY.current = e.touches[0].clientY;
+      touchEndX.current = e.touches[0].clientX;
+    };
 
-  const handleTouchEnd = useCallback(() => {
-    if(preventSwipeOnLoading) return;
+    const handleTouchEnd = useCallback(() => {
+      if (preventSwipeOnLoading) return;
 
-    clearTimeout(timeoutRef.current);
+      clearTimeout(timeoutRef.current);
 
-    timeoutRef.current = setTimeout(() => {
-      const swipeDistanceY = touchStartY.current - touchEndY.current;
-      const swipeDistanceX = touchStartX.current - touchEndX.current;
+      timeoutRef.current = setTimeout(() => {
+        const swipeDistanceY = touchStartY.current - touchEndY.current;
+        const swipeDistanceX = touchStartX.current - touchEndX.current;
 
-      if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) {
-        return;
+        if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) {
+          return;
+        }
+
+        if (swipeDistanceY > SWIPE_THRESHOLD && currentIndex < dataLength - 1) {
+          nextSlide();
+        } else if (swipeDistanceY < -SWIPE_THRESHOLD && currentIndex > 0) {
+          prevSlide();
+        }
+
+        if (
+          swipeDistanceY > SWIPE_THRESHOLD &&
+          currentIndex + 1 === dataLength
+        ) {
+          loadMore();
+        }
+      }, 80);
+    }, [currentIndex, dataLength, loadMore]);
+
+    const nextSlide = useCallback(() => {
+      if (currentIndex < dataLength - 1) {
+        setCurrentIndex((prevIndex) => prevIndex + 1);
       }
+    }, [currentIndex, dataLength]);
 
-      if (swipeDistanceY > SWIPE_THRESHOLD && currentIndex < dataLength - 1) {
-        nextSlide();
-      } else if (swipeDistanceY < -SWIPE_THRESHOLD && currentIndex > 0) {
-        prevSlide();
+    const prevSlide = useCallback(() => {
+      if (currentIndex > 0) {
+        setCurrentIndex((prevIndex) => prevIndex - 1);
       }
+    }, [currentIndex]);
 
-      if (swipeDistanceY > SWIPE_THRESHOLD && currentIndex + 1 === dataLength) {
-        loadMore();
-      }
-    }, 80);
-  }, [currentIndex, dataLength, loadMore]);
+    useImperativeHandle(ref, () => ({
+      nextSlide,
+      prevSlide,
+      goToSlide: (index) => {
+        if (index >= 0 && index < dataLength) {
+          setCurrentIndex(index);
+        }
+      },
+    }));
 
-  const nextSlide = useCallback(() => {
-    if (currentIndex < dataLength - 1) {
-      setCurrentIndex((prevIndex) => prevIndex + 1);
-    }
-  }, [currentIndex, dataLength]);
+    useEffect(() => {
+      return () => clearTimeout(timeoutRef.current);
+    }, []);
 
-  const prevSlide = useCallback(() => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prevIndex) => prevIndex - 1);
-    }
-  }, [currentIndex]);
-
-  useImperativeHandle(ref, () => ({
-    nextSlide,
-    prevSlide,
-    goToSlide: (index) => {
-      if (index >= 0 && index < dataLength) {
-        setCurrentIndex(index);
-      }
-    },
-  }));
-
-  useEffect(() => {
-    return () => clearTimeout(timeoutRef.current);
-  }, []);
-
-  return (
-    <div
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      className={swiperCss.swipeable_container}
-      {...props}
-    >
+    return (
       <div
-        className={swiperCss.swipeable_content}
-        style={{
-          transform: `translateY(-${currentIndex * 100}vh)`,
-          transition: "transform 0.5s cubic-bezier(0.4, 0.8, 0.6, 1)",
-        }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        className={swiperCss.swipeable_container}
+        {...props}
       >
-        {React.Children.map(children, (child, index) =>
-          React.cloneElement(child, { key: `swiper-item-${index}` })
-        )}
+        <div
+          className={swiperCss.swipeable_content}
+          style={{
+            transform: `translateY(-${currentIndex * 100}vh)`,
+            transition: "transform 0.5s cubic-bezier(0.4, 0.8, 0.6, 1)",
+          }}
+        >
+          {React.Children.map(children, (child, index) =>
+            React.cloneElement(child, { key: `swiper-item-${index}` })
+          )}
+        </div>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
 
 function SwiperItem({ children, loading, ...props }) {
   return (
     <div className={swiperCss.swipeable_item} {...props}>
       {children}
-         <div className={swiperCss.loading_indicator} style={{minHeight:'40px'}}>
-          <div className={swiperCss.spinner} style={{display: loading ? 'block' : 'none'}}></div>
-        </div>
+      <div
+        className={swiperCss.loading_indicator}
+        style={{ marginBottom: loading ? "40px" : "0px" }}
+      >
+        <div
+          className={swiperCss.spinner}
+          style={{ display: loading ? "block" : "none" }}
+        ></div>
+      </div>
     </div>
   );
 }
