@@ -6,7 +6,8 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 40rem;
+    min-height: 30rem;
+    margin-bottom: 10px;
 }
 
 .card_header {

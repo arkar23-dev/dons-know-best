@@ -115,7 +115,7 @@ function SwiperItem({ children, loading, ...props }) {
   return (
     <div className={swiperCss.swipeable_item} {...props}>
       {children}
-      {loading && (
+      {true && (
         <div className={swiperCss.loading_indicator}>
           <div className={swiperCss.spinner}></div>
         </div>
