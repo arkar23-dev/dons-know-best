@@ -122,7 +122,7 @@ function SwiperItem({ children, loading, ...props }) {
       {children}
       <div
         className={swiperCss.loading_indicator}
-        style={{ marginBottom: loading ? "40px" : "0px" }}
+        style={{ marginBottom: loading ? "60px" : "0px" }}
       >
         <div
           className={swiperCss.spinner}
