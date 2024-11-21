@@ -115,11 +115,9 @@ function SwiperItem({ children, loading, ...props }) {
   return (
     <div className={swiperCss.swipeable_item} {...props}>
       {children}
-      {true && (
-        <div className={swiperCss.loading_indicator}>
-          <div className={swiperCss.spinner}></div>
+        <div className={swiperCss.loading_indicator} style={{minHeight: loading?'0px': '20px'}}>
+          <div className={swiperCss.spinner} style={{display: loading ? 'block' :'none'}}></div>
         </div>
-      )}
     </div>
   );
 }

@@ -25,6 +25,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     height: 100vh;
     color: #fff;
     font-size: 2rem;
@@ -34,14 +35,12 @@ body {
 
 /* Fullscreen Container for the Loading Indicator */
 .loading_indicator {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
 }
 
 /* Spinner Style */
