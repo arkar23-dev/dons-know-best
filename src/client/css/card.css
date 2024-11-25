@@ -65,19 +65,18 @@
     align-self: center;
     font-size: 1.45rem;
     color: #333333;
+    margin-top: 0.5rem;
 }
 .navButtonsFlexContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: black;
-    height: 100%;
 }
 .navButtonComponent {
     padding: 0.25rem;
     align-content: center;
     flex: 1;
-    min-height: 100%;
 }
 
 .rateButton {
