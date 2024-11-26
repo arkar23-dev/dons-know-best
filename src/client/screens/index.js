@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Padding, Header, Checkbox, BasicSegment } from "@ombiel/aek-lib";
 import CallToActionButton from "../components/button";
 import BadgeButton from "../components/badge";
@@ -18,6 +18,7 @@ function Index() {
           style={{
             textAlign: "center",
             fontWeight: 700,
+            textTransform: "uppercase",
           }}
         >
           What Would You Like TO EAT?
