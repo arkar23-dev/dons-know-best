@@ -4,30 +4,35 @@ import { CAMPUSM_ASSETS_SANDBOX } from "../constants";
 import { Swiper, SwiperItem } from "../components/swiper";
 import DraggableCard from "../components/draggablecard";
 import NavigableActionButtons from "../components/utils/navigableActionButtons";
+import {Rating} from "react-simple-star-rating";
 const contentData = [
   {
     id: 1,
     title: "Content 1",
     description:
       "Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum",
+      rating : 4,
   },
   {
     id: 2,
     title: "Content 2",
     description:
       "Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum",
+      rating : 2.5,
   },
   {
     id: 3,
     title: "Content 3",
     description:
       "Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum",
+      rating: 4.75,
   },
   {
     id: 4,
     title: "Content 4",
     description:
       "Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum",
+      rating: 3
   },
 ];
 const AMT_img = `${CAMPUSM_ASSETS_SANDBOX}/images/recumbent-bike.svg`;
@@ -70,7 +75,7 @@ const Screen = () => {
               <div className={cardCss.card_body}>
                 <div>
                   <h1>{content.title}</h1>
-                  <p>Myanmar Cuisine</p>
+                  <p>Myanmar Cuisine   <Rating readonly={true} initialValue={content.rating} size={15} allowFraction={true}></Rating></p>
                   <span>{content.description}</span>
                 </div>
 

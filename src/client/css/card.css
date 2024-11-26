@@ -16,14 +16,14 @@
     font-size: 1.25rem;
     font-weight: bold;
     text-align: center;
-    min-height: 11rem;
+    min-height: 8rem;
 }
 
 .card_body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 2.5rem;
+    padding: 1.5rem 2.5rem;
     flex-grow: 1;
     font-size: 1rem;
     color: white;
@@ -43,7 +43,7 @@
 
 .card_footer {
     display: flex;
-    padding: 0.5rem;
+    padding: 0.75rem;
     background-color: #f8f9fa;
     text-align: center;
     font-size: 0.875rem;
@@ -60,21 +60,23 @@
     border-radius: 8px;
 }
 .navigableButtons h1 {
-    font-size: 1rem;
+    margin: 0;
+    display: flex;
+    align-self: center;
+    font-size: 1.45rem;
     color: #333333;
+    margin-top: 0.5rem;
 }
 .navButtonsFlexContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: black;
-    height: 100%;
 }
 .navButtonComponent {
     padding: 0.25rem;
     align-content: center;
     flex: 1;
-    min-height: 100%;
 }
 
 .rateButton {
@@ -84,10 +86,25 @@
     color: black;
     background-color: #ffb74d;
     padding: 10px 20px;
+    flex:1;
+    margin-top: 1.5rem;
 }
 
 @media (min-width: 768px) {
     .card {
         min-height: 600px;
     }
+    .card_header {
+        min-height: 11rem;
+    }
+    .card_body {
+        padding: 2.5rem;
+    }
+    .rateButton{
+        margin-top: 2.5rem;
+    }
+    .card_footer {
+        padding: 1.5rem;
+    }
+
 }

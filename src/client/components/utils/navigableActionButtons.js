@@ -9,8 +9,8 @@ const NavigableActionButtons = ({ img, actionName, actionLink }) => {
           style={{ alignSelf: "center" }}
           src={img}
           alt={actionName}
-          height={40}
-          width={40}
+          height={30}
+          width={30}
         />
         <p style={{ alignSelf: "center" }}> {actionName}</p>
       </a>
