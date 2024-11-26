@@ -6,7 +6,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 40rem;
+    min-height: 45rem;
 }
 
 .card_header {
@@ -16,7 +16,7 @@
     font-size: 1.25rem;
     font-weight: bold;
     text-align: center;
-    min-height: 8rem;
+    min-height: 16rem;
 }
 
 .card_body {
