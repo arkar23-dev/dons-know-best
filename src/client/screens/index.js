@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Padding, Header, Checkbox, BasicSegment } from "@ombiel/aek-lib";
 import CallToActionButton from "../components/button";
 import BadgeButton from "../components/badge";
@@ -6,8 +6,25 @@ import ScrollContainer from "../components/scrollContainer";
 import Flex from "../components/utils/flex";
 import "../css/index.css";
 import { router } from "../route";
+import store from "../store";
 
-function index() {
+function Index() {
+  const time = store.state.filters.time_of_day;
+  const [, setUpdate] = useState(0); // A dummy state to force updates
+
+  useEffect(() => {
+    const handleChange = () => {
+      setUpdate((prev) => prev + 1); // Increment the state to force re-render
+    };
+
+    store.on("change", handleChange);
+
+    // Cleanup on component unmount
+    return () => {
+      store.off("change", handleChange);
+    };
+  }, []);
+
   return (
     <BasicSegment style={{ padding: 0 }}>
       <Padding>
@@ -31,7 +48,14 @@ function index() {
         </Header>
         <ScrollContainer>
           <Flex gap={8}>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
+            <BadgeButton
+              onClick={() => {
+                store.set("filters.time_of_day", "breakfast");
+              }}
+              active={store.get("filters.time_of_day") === "breakfast"}
+            >
+              Breakfast
+            </BadgeButton>
             <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
             <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
             <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
@@ -211,4 +235,4 @@ function index() {
   );
 }
 
-export default index;
+export default Index;
