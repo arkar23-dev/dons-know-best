@@ -6,24 +6,9 @@ import ScrollContainer from "../components/scrollContainer";
 import Flex from "../components/utils/flex";
 import "../css/index.css";
 import { router } from "../route";
-import store from "../store";
-
+import useFilterStore from "../hooks/useFilterStore";
 function Index() {
-  const time = store.state.filters.time_of_day;
-  const [, setUpdate] = useState(0); // A dummy state to force updates
-
-  useEffect(() => {
-    const handleChange = () => {
-      setUpdate((prev) => prev + 1); // Increment the state to force re-render
-    };
-
-    store.on("change", handleChange);
-
-    // Cleanup on component unmount
-    return () => {
-      store.off("change", handleChange);
-    };
-  }, []);
+  const store = useFilterStore();
 
   return (
     <BasicSegment style={{ padding: 0 }}>
@@ -38,6 +23,7 @@ function Index() {
           What Would You Like TO EAT?
         </Header>
       </Padding>
+
       {/* time of day  */}
       <Padding style={{ marginBottom: "16px" }}>
         <Header

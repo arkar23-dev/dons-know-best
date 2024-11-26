@@ -4,8 +4,8 @@ const store = new SimpleStore({
   initialState: {
     filters: {
       time_of_day: null,
-      fast_and_cascual: null,
-      cusine: null,
+      fast_and_casual: null,
+      cuasine: null,
       dessert: null,
       diet: null,
     },
