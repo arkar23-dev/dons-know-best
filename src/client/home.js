@@ -2,7 +2,6 @@ import React from "react";
 import "react-dom";
 import { reactRender } from "@ombiel/aek-lib";
 
-// import {Root} from "./route";
-import Results from "./screens/results";
+import { Root } from "./route";
 
-reactRender(<Results />);
+reactRender(<Root />);
