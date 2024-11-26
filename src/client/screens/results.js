@@ -5,6 +5,8 @@ import { Swiper, SwiperItem } from "../components/swiper";
 import DraggableCard from "../components/draggablecard";
 import NavigableActionButtons from "../components/utils/navigableActionButtons";
 import { Rating } from "react-simple-star-rating";
+import { BasicSegment } from "@ombiel/aek-lib";
+
 const contentData = [
   {
     id: 1,
@@ -46,103 +48,105 @@ const Screen = () => {
   const swiperRef = useRef();
 
   return (
-    <Swiper
-      loadMore={() => {
-        setLoading(true);
-        setTimeout(() => {
-          setLoading(false);
-          setData(() => [...data, ...data]);
-          swiperRef.current.nextSlide();
-        }, 2000);
-      }}
-      preventSwipeOnLoading={loading}
-      ref={swiperRef}
-    >
-      {data.map((content, index) => (
-        <SwiperItem key={content.id} loading={loading}>
-          <DraggableCard
-            onSwipeLeft={() => alert("You Swipe Left")}
-            onSwipeRight={() => alert("You Swipe Right")}
-          >
-            <div className={cardCss.card}>
-              <div
-                className={cardCss.card_header}
-                style={{
-                  backgroundImage: `url(${bck_img})`,
-                  backgroundSize: "cover",
-                }}
-              ></div>
-              <div className={cardCss.card_body}>
-                <div>
-                  <h1>{content.title}</h1>
-                  <p>
-                    Myanmar Cuisine{" "}
-                    <Rating
-                      readonly={true}
-                      initialValue={content.rating}
-                      size={15}
-                      allowFraction={true}
-                    ></Rating>
-                  </p>
-                  <span>{content.description}</span>
-                </div>
-
+    <BasicSegment style={{ padding: 0 }}>
+      <Swiper
+        loadMore={() => {
+          setLoading(true);
+          setTimeout(() => {
+            setLoading(false);
+            setData(() => [...data, ...data]);
+            swiperRef.current.nextSlide();
+          }, 2000);
+        }}
+        preventSwipeOnLoading={loading}
+        ref={swiperRef}
+      >
+        {data.map((content, index) => (
+          <SwiperItem key={content.id} loading={loading}>
+            <DraggableCard
+              onSwipeLeft={() => alert("You Swipe Left")}
+              onSwipeRight={() => alert("You Swipe Right")}
+            >
+              <div className={cardCss.card}>
                 <div
+                  className={cardCss.card_header}
                   style={{
-                    width: "100%",
-                    display: "flex",
-                    justifyContent: "center",
+                    backgroundImage: `url(${bck_img})`,
+                    backgroundSize: "cover",
                   }}
-                >
-                  <button
-                    type="button"
-                    className={cardCss.rateButton}
-                    onClick={() => console.log("wohooo")}
+                ></div>
+                <div className={cardCss.card_body}>
+                  <div>
+                    <h1>{content.title}</h1>
+                    <p>
+                      Myanmar Cuisine{" "}
+                      <Rating
+                        readonly={true}
+                        initialValue={content.rating}
+                        size={15}
+                        allowFraction={true}
+                      ></Rating>
+                    </p>
+                    <span>{content.description}</span>
+                  </div>
+
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
                   >
-                    Rate This Place
-                  </button>
+                    <button
+                      type="button"
+                      className={cardCss.rateButton}
+                      onClick={() => console.log("wohooo")}
+                    >
+                      Rate This Place
+                    </button>
+                  </div>
                 </div>
-              </div>
-              <div className={cardCss.card_footer}>
-                <div className={cardCss.navigableButtons}>
-                  <h1>Navigate here</h1>
-                  <div className={cardCss.navButtonsFlexContainer}>
-                    <div className={cardCss.navButtonComponent}>
-                      <NavigableActionButtons
-                        actionName="Drive"
-                        actionLink=""
-                        img={AMT_img}
-                      ></NavigableActionButtons>
-                    </div>
-                    <div className={cardCss.navButtonComponent}>
-                      <NavigableActionButtons
-                        actionName="Drive"
-                        actionLink=""
-                        img={AMT_img}
-                      ></NavigableActionButtons>
-                    </div>
-                    <div className={cardCss.navButtonComponent}>
-                      <NavigableActionButtons
-                        actionName="Drive"
-                        actionLink=""
-                        img={AMT_img}
-                      ></NavigableActionButtons>
-                    </div>
-                    <div className={cardCss.navButtonComponent}>
-                      <NavigableActionButtons
-                        actionName="Drive"
-                        actionLink=""
-                        img={AMT_img}
-                      ></NavigableActionButtons>
+                <div className={cardCss.card_footer}>
+                  <div className={cardCss.navigableButtons}>
+                    <h1>Navigate here</h1>
+                    <div className={cardCss.navButtonsFlexContainer}>
+                      <div className={cardCss.navButtonComponent}>
+                        <NavigableActionButtons
+                          actionName="Drive"
+                          actionLink=""
+                          img={AMT_img}
+                        ></NavigableActionButtons>
+                      </div>
+                      <div className={cardCss.navButtonComponent}>
+                        <NavigableActionButtons
+                          actionName="Drive"
+                          actionLink=""
+                          img={AMT_img}
+                        ></NavigableActionButtons>
+                      </div>
+                      <div className={cardCss.navButtonComponent}>
+                        <NavigableActionButtons
+                          actionName="Drive"
+                          actionLink=""
+                          img={AMT_img}
+                        ></NavigableActionButtons>
+                      </div>
+                      <div className={cardCss.navButtonComponent}>
+                        <NavigableActionButtons
+                          actionName="Drive"
+                          actionLink=""
+                          img={AMT_img}
+                        ></NavigableActionButtons>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </DraggableCard>
-        </SwiperItem>
-      ))}
-    </Swiper>
+            </DraggableCard>
+          </SwiperItem>
+        ))}
+      </Swiper>
+    </BasicSegment>
   );
 };
 
