@@ -6,7 +6,7 @@ const BadgeButton = ({ active, children, ...props }) => {
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "8px 18px",
+    padding: "8px 24px",
     backgroundColor: active ? "#00543c" : "transparent",
     color: active ? "#fff" : "black",
     border: active ? "none" : "0.1px solid grey",
@@ -16,6 +16,7 @@ const BadgeButton = ({ active, children, ...props }) => {
     transition: "all 0.3s ease",
     outline: "none",
     appearance: "none",
+    textTransform: "uppercase",
   };
 
   return (
