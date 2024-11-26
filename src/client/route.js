@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  AekReactRouter,
-  RouterView,
-  Page,
-} from "@ombiel/aek-lib";
+import { AekReactRouter, RouterView, Page } from "@ombiel/aek-lib";
 import Result from "./screens/results";
 import Index from "./screens/index";
 

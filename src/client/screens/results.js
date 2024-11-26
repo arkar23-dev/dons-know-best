@@ -4,35 +4,35 @@ import { CAMPUSM_ASSETS_SANDBOX } from "../constants";
 import { Swiper, SwiperItem } from "../components/swiper";
 import DraggableCard from "../components/draggablecard";
 import NavigableActionButtons from "../components/utils/navigableActionButtons";
-import {Rating} from "react-simple-star-rating";
+import { Rating } from "react-simple-star-rating";
 const contentData = [
   {
     id: 1,
     title: "Content 1",
     description:
       "Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum",
-      rating : 4,
+    rating: 4,
   },
   {
     id: 2,
     title: "Content 2",
     description:
       "Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum",
-      rating : 2.5,
+    rating: 2.5,
   },
   {
     id: 3,
     title: "Content 3",
     description:
       "Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum",
-      rating: 4.75,
+    rating: 4.75,
   },
   {
     id: 4,
     title: "Content 4",
     description:
       "Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum cho Lorem ipsum dimsum",
-      rating: 3
+    rating: 3,
   },
 ];
 const AMT_img = `${CAMPUSM_ASSETS_SANDBOX}/images/recumbent-bike.svg`;
@@ -41,7 +41,7 @@ const bck_img =
 
 const Screen = () => {
   const [data, setData] = React.useState(contentData);
-  const [loading,setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const swiperRef = useRef();
 
@@ -50,16 +50,16 @@ const Screen = () => {
       loadMore={() => {
         setLoading(true);
         setTimeout(() => {
-            setLoading(false);
-            setData(() => [...data, ...data]);
-            swiperRef.current.nextSlide();
+          setLoading(false);
+          setData(() => [...data, ...data]);
+          swiperRef.current.nextSlide();
         }, 2000);
       }}
       preventSwipeOnLoading={loading}
       ref={swiperRef}
     >
       {data.map((content, index) => (
-        <SwiperItem key={content.id}  loading={loading}>
+        <SwiperItem key={content.id} loading={loading}>
           <DraggableCard
             onSwipeLeft={() => alert("You Swipe Left")}
             onSwipeRight={() => alert("You Swipe Right")}
@@ -75,7 +75,15 @@ const Screen = () => {
               <div className={cardCss.card_body}>
                 <div>
                   <h1>{content.title}</h1>
-                  <p>Myanmar Cuisine   <Rating readonly={true} initialValue={content.rating} size={15} allowFraction={true}></Rating></p>
+                  <p>
+                    Myanmar Cuisine{" "}
+                    <Rating
+                      readonly={true}
+                      initialValue={content.rating}
+                      size={15}
+                      allowFraction={true}
+                    ></Rating>
+                  </p>
                   <span>{content.description}</span>
                 </div>
 

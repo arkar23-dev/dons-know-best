@@ -1,7 +1,6 @@
 import React from "react";
 import { Padding, Header, Checkbox } from "@ombiel/aek-lib";
 import CallToActionButton from "../components/button";
-import { router } from "../route";
 import BadgeButton from "../components/badge";
 
 function index() {
@@ -47,16 +46,52 @@ function index() {
         </Header>
       </Padding>
 
-      {Array.from({ length: 10 }).map((_, indexSec) => (
+      {Array.from({ length: 3 }).map((_, indexSec) => (
         <React.Fragment key={indexSec}>{filterSec}</React.Fragment>
       ))}
 
-      <Padding>
-        <Checkbox label="$100" />
-        <CallToActionButton style={{ width: "100%" }}>
-          Search
-        </CallToActionButton>
-      </Padding>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Padding
+          style={{
+            gap: "20px",
+            display: "flex",
+            flexDirection: "column",
+            width: "70%",
+          }}
+        >
+          <p style={{ padding: 0, margin: 0, fontSize: "16px" }}>
+            Narrow it down <span style={{ fontSize: "10px" }}>(Optional)</span>
+          </p>
+          <div>
+            <span style={{ fontWeight: "bold", padding: 0 }}>Price</span>
+            <br />
+            <div style={{ display: "flex", gap: "16px" }}>
+              <Checkbox label="$100" />
+              <Checkbox label="$100" />
+              <Checkbox label="$100" />
+            </div>
+          </div>
+          <div>
+            <span style={{ fontWeight: "bold", padding: 0 }}>Price</span>
+            <br />
+            <div style={{ display: "flex", gap: "16px" }}>
+              <Checkbox label="$100" />
+              <Checkbox label="$100" />
+              <Checkbox label="$100" />
+            </div>
+          </div>
+          <CallToActionButton style={{ width: "100%" }}>
+            Search
+          </CallToActionButton>
+          <hr style={{ margin: "0", padding: "0" }} />
+          <p style={{ textAlign: "center", margin: "0", padding: "0" }}>
+            Still Can/&apost Decide
+          </p>
+          <CallToActionButton style={{ width: "100%" }} href="/results">
+            Surprise me
+          </CallToActionButton>
+        </Padding>
+      </div>
     </>
   );
 }
