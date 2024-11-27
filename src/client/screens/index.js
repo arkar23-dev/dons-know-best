@@ -7,6 +7,94 @@ import Flex from "../components/utils/flex";
 import "../css/index.css";
 import { router } from "../route";
 import useFilterStore from "../hooks/useFilterStore";
+
+const filters = {
+  "time of day": [
+    {
+      key: "time_of_day",
+      value: "breakfast",
+      label: "breakfast",
+    },
+    {
+      key: "time_of_day",
+      value: "lunch",
+      label: "lunch",
+    },
+    {
+      key: "time_of_day",
+      value: "dinner",
+      label: "dinner",
+    },
+  ],
+  "Fast And Casual": [
+    {
+      key: "fast_and_casual",
+      value: "burgers",
+      label: "burgers",
+    },
+    {
+      key: "fast_and_casual",
+      value: "deli",
+      label: "deli",
+    },
+    {
+      key: "fast_and_casual",
+      value: "pizza",
+      label: "pizza",
+    },
+  ],
+  cuisine: [
+    {
+      key: "cuisine",
+      value: "asian",
+      label: "asian",
+    },
+    {
+      key: "cuisine",
+      value: "mediterranean",
+      label: "mediterranean",
+    },
+    {
+      key: "cuisine",
+      value: "latino",
+      label: "latino",
+    },
+  ],
+  "Dessert & Cafe": [
+    {
+      key: "dessert_and_cafe",
+      value: "pastries",
+      label: "pastries",
+    },
+    {
+      key: "dessert_and_cafe",
+      value: "ice_cream",
+      label: "Ice Cream",
+    },
+    {
+      key: "dessert_and_cafe",
+      value: "boba",
+      label: "boba",
+    },
+  ],
+  "Diet Specific Food": [
+    {
+      key: "diet",
+      value: "vegetarian",
+      label: "vegetarian",
+    },
+    {
+      key: "diet",
+      value: "vegan",
+      label: "vegan",
+    },
+    {
+      key: "diet",
+      value: "halal",
+      label: "halal",
+    },
+  ],
+};
 function Index() {
   const store = useFilterStore();
 
@@ -24,138 +112,35 @@ function Index() {
           What Would You Like TO EAT?
         </Header>
       </Padding>
-
-      {/* time of day  */}
-      <Padding style={{ marginBottom: "16px" }}>
-        <Header
-          level={5}
-          style={{ textTransform: "uppercase", fontWeight: "700" }}
-        >
-          time of day
-        </Header>
-        <ScrollContainer>
-          <Flex gap={8}>
-            <BadgeButton
-              onClick={() => {
-                store.set("filters.time_of_day", "breakfast");
-              }}
-              active={store.get("filters.time_of_day") === "breakfast"}
+      {Object.keys(filters).map((label) => {
+        return (
+          <Padding key={label} style={{ marginBottom: "16px" }}>
+            <Header
+              level={5}
+              style={{ textTransform: "uppercase", fontWeight: "700" }}
             >
-              Breakfast
-            </BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-          </Flex>
-        </ScrollContainer>
-      </Padding>
-      {/* time of day  */}
-
-      {/* fast and cascual  */}
-      <Padding style={{ marginBottom: "16px" }}>
-        <Header
-          level={5}
-          style={{ textTransform: "uppercase", fontWeight: "700" }}
-        >
-          Fast And Casual
-        </Header>
-        <ScrollContainer>
-          <Flex gap={8}>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-          </Flex>
-        </ScrollContainer>
-      </Padding>
-      {/* fast and cascual  */}
-
-      {/* cusine  */}
-      <Padding style={{ marginBottom: "16px" }}>
-        <Header
-          level={5}
-          style={{ textTransform: "uppercase", fontWeight: "700" }}
-        >
-          Cusine
-        </Header>
-        <ScrollContainer>
-          <Flex gap={8}>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-          </Flex>
-        </ScrollContainer>
-      </Padding>
-      {/* cusine  */}
-
-      {/* Dessert & cafe */}
-      <Padding style={{ marginBottom: "16px" }}>
-        <Header
-          level={5}
-          style={{ textTransform: "uppercase", fontWeight: "700" }}
-        >
-          Dessert & cafe
-        </Header>
-        <ScrollContainer>
-          <Flex gap={8}>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-          </Flex>
-        </ScrollContainer>
-      </Padding>
-      {/* Dessert & cafe */}
-
-      {/* Diet Specific Food */}
-      <Padding style={{ marginBottom: "16px" }}>
-        <Header
-          level={5}
-          style={{ textTransform: "uppercase", fontWeight: "700" }}
-        >
-          Diet Specific Food
-        </Header>
-        <ScrollContainer>
-          <Flex gap={8}>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-            <BadgeButton onClick={() => console.log("hi")}>deli</BadgeButton>
-          </Flex>
-        </ScrollContainer>
-      </Padding>
-      {/* Diet Specific Food */}
+              {label}
+            </Header>
+            <ScrollContainer>
+              <Flex gap={8}>
+                {filters[label].map((item) => {
+                  return (
+                    <BadgeButton
+                      key={`${item.value}-${item.label}`}
+                      onClick={() => {
+                        store.set(`filters.${item.key}`, item.value);
+                      }}
+                      active={store.get(`filters.${item.key}`) === item.value}
+                    >
+                      {item.label}
+                    </BadgeButton>
+                  );
+                })}
+              </Flex>
+            </ScrollContainer>
+          </Padding>
+        );
+      })}
 
       <Flex style={{ justifyContent: "center" }}>
         <Padding
