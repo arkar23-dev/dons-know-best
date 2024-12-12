@@ -6,7 +6,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 30rem;
+    min-height: 45rem;
 }
 
 .card_header {
@@ -16,7 +16,7 @@
     font-size: 1.25rem;
     font-weight: bold;
     text-align: center;
-    min-height: 8rem;
+    min-height: 12rem;
 }
 
 .card_body {
@@ -86,7 +86,7 @@
     color: black;
     background-color: #ffb74d;
     padding: 10px 20px;
-    flex:1;
+    flex: 1;
     margin-top: 1.5rem;
 }
 
@@ -100,11 +100,10 @@
     .card_body {
         padding: 2.5rem;
     }
-    .rateButton{
+    .rateButton {
         margin-top: 2.5rem;
     }
     .card_footer {
         padding: 1.5rem;
     }
-
 }
